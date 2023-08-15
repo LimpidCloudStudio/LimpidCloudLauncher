@@ -11,4 +11,11 @@
   * **Custom themes**
   * **Customize news content**
   * **There are other highly customizable options**
+* **Automatic download**
+  * **Download the game automatically and install it**
+  * **Automatic download of optifine**
+  * **Automatic download of Fabric API**
+  * **Download sodium automatically**
+  * **Automatically download mods or integration packs**
+  * **There are others...**
 * **Complete independent account system (Limpid account)**

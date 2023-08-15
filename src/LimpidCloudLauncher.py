@@ -9,16 +9,84 @@ import tkinter.ttk as ttk
 from ttkbootstrap.constants import *
 from ttkbootstrap import Style
 
+def CreatFile():
+    UserGetUUID = requests.get("https://www.uuidtools.com/api/generate/timestamp-first").text
+    UserUUID = UserGetUUID[3:-3]
+
+    MinecraftVersionsGet = requests.get('https://bmclapi2.bangbang93.com/mc/game/version_manifest.json').text
+    MinecraftVersions = json.loads(MinecraftVersionsGet)
+
+    if os.path.isdir('.minecraft/') == False:
+        os.makedirs('.minecraft')
+    if os.path.isdir('.minecraft/assets') == False:
+        os.makedirs('.minecraft/assets')
+    if os.path.isdir('.minecraft/resourcepacks') == False:
+        os.makedirs('.minecraft/resourcepacks')
+    if os.path.isdir('.minecraft/saves') == False:
+        os.makedirs('.minecraft/saves')
+    if os.path.isdir('.minecraft/mods') == False:
+        os.makedirs('.minecraft/mods')
+    if os.path.isdir('.minecraft/logs') == False:
+        os.makedirs('.minecraft/logs')
+    if os.path.isdir('.minecraft/libraries') == False:
+        os.makedirs('.minecraft/libraries')
+    if os.path.isdir('.minecraft/versions') == False:
+        os.makedirs('.minecraft/versions')
+    if os.path.isdir('.mtl') == False:
+        os.makedirs('.mtl')
+    if os.path.isfile('.mtl/config.json') == False:
+        Test = {"mojang":False,"alpha":0.95,"source":"bmcl","Java":{"versions":"8","path":""},"hints":["MTL是用py写的","MTL历史上重构过3次哦!"],"Game":{"Code":"eyJ0eXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXQv-VA","JavaPath":"","Xmx":2,"G1GC":True,"username":"test","version":"","gameDir":"","assetsDir":"","assetIndex":"","uuid":UserUUID,"accessToken":"","userType":"","versionType":"release","width":"854","height":"480"},"author":"陆御"}
+        with open('.mtl/config.json','w',encoding='utf-8') as f:
+            fe = json.dumps(Test,sort_keys=True, indent=4, separators=(',', ':'))
+            f.write(fe)
+            f.close()
+    if os.path.isfile('.mtl/config.txt') == False:
+        with open('.mtl/config.txt','w',encoding='utf-8') as f:
+            f.write('"<JavawPath>" -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump"\n\
+ -Dos.name=Windows 10"\n\
+ -Dos.version=10.0 -Xms1M\n\
+ -Djava.library.path=<nativespath> \n\
+ -Dminecraft.launcher.brand=MinecraftTechLauncher\n\
+ -Dminecraft.launcher.version=4.0.1\n\
+ -cp <CpLib>\n\
+ -Xmx<XmxPy>\n\
+ -XX:+UnlockExperimentalVMOptions\n\
+ -XX:+UseG1GC\n\
+ -XX:G1NewSizePercent=20\n\
+ -XX:G1ReservePercent=20\n\
+ -XX:MaxGCPauseMillis=50\n\
+ -XX:G1HeapRegionSize=32M\n\
+ -Dlog4j.configurationFile=<log4jFile> <mainClass>\n\
+ --username <UserNamePy>\n\
+ --version <VersionPy>\n\
+ --gameDir <GameDirPy>\n\
+ --assetsDir <assetsDirPy>\n\
+ --assetIndex <assetIndexPy>\n\
+ --uuid <uuidPy>\n\
+ --accessToken <accessTokenPy>\n\
+ --userType <userTypePy>\n\
+ --versionType <versionTypePy>\n\
+ --width <widthPy>\n\
+ --height <heightPy>')
+            f.close()
+
 MainWind = Style(theme='cyborg').master
 # Game Par
 Ram = psutil.virtual_memory()
 Rams = float(Ram.total) / 1024 / 1024 / 1024
 MinecraftVersionsGet = requests.get('https://bmclapi2.bangbang93.com/mc/game/version_manifest.json').text
 MinecraftVersions = json.loads(MinecraftVersionsGet)
+MinecraftVersionsList = ["请选择版本"]
+MinecraftVersionsListOS = os.listdir('.minecraft/versions')
+MinecraftVersionsList.append(MinecraftVersionsListOS)
+MinecraftVersionsTuple = tuple(MinecraftVersionsList)
 
 # Games & Participation
+GetGameAllFileVar = tk.StringVar()
+DownAllGameFileVar = tk.StringVar()
+
 GetGameVersions = ttk.Combobox(MainWind, state="readonly", )
-GetGameVersions['values'] = ("请选择版本")
+GetGameVersions['values'] = MinecraftVersionsTuple
 GetGameVersions.current(0)
 GetJava = ttk.Combobox(MainWind, state="readonly", )
 GetJava['values'] = ("请选择Java")
@@ -26,8 +94,8 @@ GetJava.current(0)
 Settings = ttk.Button(MainWind, text="设置", takefocus=False,)
 Downloads = ttk.Button(MainWind, text="下载", takefocus=False)
 Content = ttk.LabelFrame(MainWind,text="提示",)
-GetGameAllFile = ttk.Checkbutton(MainWind,text="检查游戏完整性",)
-DownAllGameFile = ttk.Checkbutton(MainWind,text="尝试替换本地库文件",)
+GetGameAllFile = ttk.Checkbutton(MainWind,text="检查游戏完整性",variable=GetGameAllFileVar,)
+DownAllGameFile = ttk.Checkbutton(MainWind,text="尝试替换本地库文件",variable=DownAllGameFileVar)
 VersionsSetting = ttk.Button(MainWind, text="版本设置", takefocus=False,)
 Mods = ttk.Button(MainWind, text="模组", takefocus=False,)
 SetRamLabel = ttk.Label(MainWind,text="设置内存 (GB)",anchor="center", )
@@ -79,6 +147,9 @@ GetWe.place(x=10, y=247, width=463, height=37)
 Agreement.place(x=280, y=285, width=192, height=32)
 QuitButton.place(x=620, y=0, width=31, height=31)
 TitleLabel.place(x=0, y=0, width=149, height=28)
+
+thread = threading.Thread(CreatFile())
+thread.start()
 
 # Window
 MainWind.overrideredirect (True) 

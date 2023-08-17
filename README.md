@@ -19,3 +19,11 @@
   * **Automatically download mods or integration packs**
   * **There are others...**
 * **Complete independent account system (Limpid account)**
+
+# Contribute
+* **[*Buelie*](https://github.com/Buelie)is Branch owner**
+* **[***BMCL/MCBBS***]()Propose an image download source**
+
+# Concerning
+**The project was developed in April 2022 and the warehouse was established in August 2023** <br>
+**Join us : [KOOK](https://www.kookapp.cn/kA3wpZ)**
